@@ -1,9 +1,9 @@
 // SigninScreen.tsx
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Pressable } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../types/navigation';
+import { RootStackParamList } from '../types/navigaton';
 import { RouteProp } from '@react-navigation/native';
 
 type SigninScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Signin'>;
@@ -17,9 +17,9 @@ const SigninScreen: React.FC<Props> = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   const handleSignin = () => {
-    // Add authentication logic here
-    navigation.navigate('Journal');
-  };
+
+
+};
 
   return (
     <View style={styles.container}>
@@ -39,7 +39,10 @@ const SigninScreen: React.FC<Props> = ({ navigation }) => {
         secureTextEntry
       />
       <Button title="Sign In" onPress={handleSignin} />
-      <Button title="Go to Signup" onPress={() => navigation.navigate('Signup')} />
+      {/* <Button title="Signp" onPress={() => navigation.navigate('Signup')} /> */}
+      <Pressable style={styles.linkPress} onPress={() =>  navigation.navigate('Signup')}>
+        <Text style={styles.link}>Signup</Text>
+      </Pressable>
     </View>
   );
 };
@@ -63,6 +66,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingHorizontal: 10,
   },
+  linkPress: {
+    padding: 10,
+  },
+  link: {
+    textDecorationLine: 'underline',
+    color: 'blue',
+
+  }
 });
 
 export default SigninScreen;

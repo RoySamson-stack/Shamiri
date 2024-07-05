@@ -1,5 +1,3 @@
-// HomeScreen.tsx
-
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -9,31 +7,40 @@ import { RouteProp } from '@react-navigation/native';
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 type Props = {
-  navigation: HomeScreenNavigationProp;
+    navigation: HomeScreenNavigationProp;
 };
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome to Journal App</Text>
-      <Button title="Sign In" onPress={() => navigation.navigate('Signin')} />
-      <Button title="Sign Up" onPress={() => navigation.navigate('Signup')} />
-    </View>
-  );
+    return (
+        <View style={styles.container}>
+            <Text style={styles.title}>Welcome to Journal App</Text>
+            <View style={styles.buttons}>
+                <Button title="Sign In" onPress={() => navigation.navigate('Signin')} />
+                <Button title="Sign Up" onPress={() => navigation.navigate('Signup')} />
+            </View>
+        </View>
+    );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
+    container: {
+        flex: 1,
+        padding: 20,
+        justifyContent: 'center',
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 10,
+        textAlign: 'center',
+    },
+    buttons: {
+        padding: 20,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        width: 300,
+        justifyContent: 'space-around',
+    }
 });
 
 export default HomeScreen;
