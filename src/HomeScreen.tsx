@@ -24,7 +24,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Journals</Text>
-      {/* <TextInput
+      <TextInput
         style={styles.input}
         placeholder="Enter your journal entry"
         value={journal}
@@ -41,7 +41,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           </TouchableOpacity>
         )}
         keyExtractor={(item) => item.id}
-      /> */}
+      />
     </View>
   );
 };
