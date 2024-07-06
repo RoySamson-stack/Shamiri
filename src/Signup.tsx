@@ -17,8 +17,9 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
   const handleSignup = () => {
-    // Add signup logic here
-    // navigation.navigate('Journal');
+   
+    
+    console.debug(email, password)
   };
 
   return (
