@@ -1,10 +1,9 @@
-// SignupScreen.tsx
-
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet,Pressable } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet,Pressable, Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigaton';
 import { RouteProp } from '@react-navigation/native';
+import axios from 'axios'
 
 type SignupScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Signup'>;
 
@@ -13,13 +12,28 @@ type Props = {
 };
 
 const SignupScreen: React.FC<Props> = ({ navigation }) => {
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSignup = () => {
-   
-    
-    console.debug(email, password)
+  const handleSignup = async () => {
+   try{
+    const response = await axios.post('https://localhost:3000/signup', {
+      username, 
+      email, 
+      password
+    });
+
+    console.log('Signup repsonse:', response.data);
+    Alert.alert('Signup Sucessful', 'You have succesfully signed up')
+
+
+
+    navigation.navigate('Home')
+   }catch (error){
+    console.error('Signup error:', error);
+    Alert.alert('Signup Failed', 'An error occured during the singup')
+   }
   };
 
   return (

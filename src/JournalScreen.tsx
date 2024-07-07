@@ -1,33 +1,22 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
+import { View, Text, Button } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../types/navigaton';
-
-type JournalScreenRouteProp = RouteProp<RootStackParamList, 'Journal'>;
+import { RootStackParamList } from '../types/navigaton'
 
 type Props = {
-  route: JournalScreenRouteProp;
+  navigation: StackNavigationProp<RootStackParamList, 'Home'>;
 };
 
-const JournalScreen: React.FC<Props> = ({ route }) => {
-  const { journal } = route.params;
+const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.journalText}>{journal}</Text>
+    <View>
+      <Text>Home Screen</Text>
+      <Button
+        title="Go to Journal"
+        // onPress={() => navigation.navigate('Journal')}
+      />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    justifyContent: 'center',
-  },
-  journalText: {
-    fontSize: 18,
-  },
-});
-
-export default JournalScreen;
+export default HomeScreen;
