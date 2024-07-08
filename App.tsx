@@ -7,6 +7,7 @@ import Signup from './src/Signup';
 import Signin from './src/Signin';
 import CreateJournal from "./src/CreateJournal"
 import JournalContent from "./src/JournalContent"
+import EditJournal from './src/EditJournal';
 import { RootStackParamList } from './types/navigaton';
 import CreateJournalScreen from './src/CreateJournal';
 
@@ -21,6 +22,7 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen} /> */}
         <Stack.Screen name="Home" component={JournalScreen} />
         <Stack.Screen name="CreateJournal" component={CreateJournal}/>
+        <Stack.Screen name="EditJournal" component={EditJournal} />
         <Stack.Screen name="JournalContent" component={JournalContent} />
       </Stack.Navigator>
     </NavigationContainer>

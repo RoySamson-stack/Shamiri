@@ -4,6 +4,7 @@ export type RootStackParamList = {
     Signup: undefined;
     // Journal: { journal: string };
     CreateJournal: undefined;
+    EditJournal: {journalId: string}
     JournalContent: {journalId: string}
   };
   

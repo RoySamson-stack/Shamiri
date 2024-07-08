@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, FlatList, StyleSheet, Pressable, Alert, Button } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigaton';
 
@@ -7,14 +7,42 @@ type Props = {
   navigation: StackNavigationProp<RootStackParamList, 'Home'>;
 };
 
-const journals = [
+const initialJournals = [
   { id: '1', title: 'Travel Journal', tags: ['travel'] },
   { id: '2', title: 'Work Journal', tags: ['work'] },
   { id: '3', title: 'Health Journal', tags: ['health'] },
 ];
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
-  const renderItem = ({ item }: { item: { title: string, tags: string[] } }) => (
+  const [journals, setJournals] = useState(initialJournals);
+
+  const handleDelete = (id: string) => {
+    Alert.alert(
+      'Delete Journal',
+      'Are you sure you want to delete this journal?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            setJournals(journals.filter(journal => journal.id !== id));
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  const handleEdit = (id: string) => {
+    // Navigate to the edit screen and pass the journal ID as a parameter
+    navigation.navigate('EditJournal', { journalId: id });
+  };
+
+  const renderItem = ({ item }: { item: { id: string, title: string, tags: string[] } }) => (
     <View style={styles.journalItem}>
       <Text style={styles.journalTitle}>{item.title}</Text>
       <View style={styles.tagContainer}>
@@ -22,6 +50,13 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           <Text key={tag} style={styles.tag}>{tag}</Text>
         ))}
       </View>
+      <Button title="Edit" onPress={() => handleEdit(item.id)} />
+      <Pressable
+        style={styles.delete}
+        onPress={() => handleDelete(item.id)}
+      >
+        <Text style={styles.buttonText}>Delete</Text>
+      </Pressable>
     </View>
   );
 
@@ -65,12 +100,12 @@ const styles = StyleSheet.create({
   },
   journalItem: {
     flexDirection: 'row',
-    alignItems: 'center', 
+    alignItems: 'center',
     padding: 10,
     borderBottomColor: '#ccc',
     borderBottomWidth: 1,
     display: 'flex',
-    justifyContent: 'space-between', 
+    justifyContent: 'space-between',
   },
   journalTitle: {
     fontSize: 18,
@@ -84,6 +119,14 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 5,
     marginLeft: 5,
+  },
+  delete: {
+    backgroundColor: 'red',
+    padding: 5
+  },
+  buttonText: {
+    color: '#fff',
+    textAlign: 'center',
   },
 });
 
