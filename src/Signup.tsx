@@ -12,33 +12,37 @@ type Props = {
 };
 
 const SignupScreen: React.FC<Props> = ({ navigation }) => {
-  const [username, setUsername] = useState('')
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSignup = async () => {
-   try{
-    const response = await axios.post('https://localhost:3000/signup', {
-      username, 
-      email, 
-      password
-    });
+    try {
+      const response = await axios.post('http://localhost:5000/signup', {  
+        username,
+        email,
+        password
+      });
 
-    console.log('Signup repsonse:', response.data);
-    Alert.alert('Signup Sucessful', 'You have succesfully signed up')
+      console.log('Signup response:', response.data);
+      Alert.alert('Signup Successful', 'You have successfully signed up');
 
-
-
-    navigation.navigate('Home')
-   }catch (error){
-    console.error('Signup error:', error);
-    Alert.alert('Signup Failed', 'An error occured during the singup')
-   }
+      // navigation.navigate('Home');  
+    } catch (error) {
+      console.error('Signup error:', error);
+      Alert.alert('Signup Failed', 'An error occurred during signup');
+    }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign Up</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Username"
+        value={username}
+        onChangeText={setUsername}
+      />
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -54,7 +58,6 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
         secureTextEntry
       />
       <Button title="Sign Up" onPress={handleSignup} />
-      {/* <Button title="Go to Signin" onPress={() => navigation.navigate('Signin')} /> */}
       <Pressable style={styles.linkPress} onPress={() => navigation.navigate('Signin')}>
         <Text style={styles.link}>Signin</Text>
       </Pressable>
