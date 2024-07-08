@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, FlatList, StyleSheet, Pressable } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Pressable } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigaton';
 
@@ -13,10 +13,15 @@ const journals = [
   { id: '3', title: 'Health Journal', tags: ['health'] },
 ];
 
-const Journal: React.FC<Props> = ({ navigation }) => {
-  const renderItem = ({ item }: { item: { title: string } }) => (
+const HomeScreen: React.FC<Props> = ({ navigation }) => {
+  const renderItem = ({ item }: { item: { title: string, tags: string[] } }) => (
     <View style={styles.journalItem}>
-      <Text>{item.title}</Text>
+      <Text style={styles.journalTitle}>{item.title}</Text>
+      <View style={styles.tagContainer}>
+        {item.tags.map(tag => (
+          <Text key={tag} style={styles.tag}>{tag}</Text>
+        ))}
+      </View>
     </View>
   );
 
@@ -59,10 +64,27 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   journalItem: {
+    flexDirection: 'row',
+    alignItems: 'center', 
     padding: 10,
     borderBottomColor: '#ccc',
     borderBottomWidth: 1,
+    display: 'flex',
+    justifyContent: 'space-between', 
+  },
+  journalTitle: {
+    fontSize: 18,
+    flex: 1,
+  },
+  tagContainer: {
+    flexDirection: 'row',
+  },
+  tag: {
+    backgroundColor: '#e0e0e0',
+    padding: 5,
+    borderRadius: 5,
+    marginLeft: 5,
   },
 });
 
-export default Journal;
+export default HomeScreen;
