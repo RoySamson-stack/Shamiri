@@ -65,7 +65,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       <Text style={styles.title}>Journals</Text>
       <Pressable
         style={styles.createButton}
-        onPress={() => navigation.navigate('CreateJournal')}
+        onPress={() => navigation.navigate('CreateJournal', {user_id})}
       >
         <Text style={styles.createButtonText}>Create New Journal</Text>
       </Pressable>

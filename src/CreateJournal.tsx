@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Pressable } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../types/navigaton';
-import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../types/navigation';
+import axios from 'axios';
 
 type CreateJournalScreenNavigationProp = StackNavigationProp<RootStackParamList, 'CreateJournal'>;
 
@@ -15,20 +15,46 @@ const tags = ['Travel', 'Work', 'Health'];
 const CreateJournalScreen: React.FC<Props> = ({ navigation }) => {
   const [title, setTitle] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [content, setContent] = useState('');
+  const [user_id, setUser_id] = useState<string | null>(null); // Initialize user_id state
 
-  const handleTagPress = (tag: string) => {
-    if (selectedTags.includes(tag)) {
-      setSelectedTags(selectedTags.filter(t => t !== tag));
-    } else {
-      setSelectedTags([...selectedTags, tag]);
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const response = await axios.get('https://aeba-41-80-116-253.ngrok-free.app/user/id');
+        const userData = response.data;
+        setUser_id(userData.user_id);
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching user ID:', error);
+      }
+    };
+
+    fetchUserId();
+  }, []);
+
+  const handleCreateJournal = async () => {
+    try {
+      const response = await axios.post('https://aeba-41-80-116-253.ngrok-free.app/createJournal', {
+        user_id,
+        title,
+        content,
+        tags: selectedTags,
+      });
+      console.log('Journal created:', response.data);
+      navigation.navigate('Journal')
+    } catch (error) {
+      console.error('Failed to create journal:', error);
     }
   };
 
-  const handleCreateJournal = () => {
-    console.debug(title, selectedTags);
-    // Navigate to journal content page with journal ID (e.g., 'newJournalId')
-    navigation.navigate('JournalContent', { journalId: 'newJournalId' });
-  };
+  if (user_id === null) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -51,6 +77,13 @@ const CreateJournalScreen: React.FC<Props> = ({ navigation }) => {
           </Pressable>
         ))}
       </View>
+      <TextInput
+        style={[styles.input, { height: 200 }]}
+        placeholder="Content"
+        value={content}
+        onChangeText={setContent}
+        multiline
+      />
       <Button title="Create Journal" onPress={handleCreateJournal} />
     </View>
   );

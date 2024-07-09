@@ -1,10 +1,8 @@
-// SigninScreen.tsx
-
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Pressable } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Pressable, Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigaton';
-import { RouteProp } from '@react-navigation/native';
+import axios from 'axios';
 
 type SigninScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Signin'>;
 
@@ -16,10 +14,23 @@ const SigninScreen: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSignin = () => {
+  const handleSignin = async () => {
+    try {
+      const response = await axios.post('https://aeba-41-80-116-253.ngrok-free.app/signin', {
+        email,
+        password
+      });
 
+      console.log('Signin response:', response.data);
+      Alert.alert('Signin Successful', 'You have successfully signed in');
+      const {user_id} = response.data;
 
-};
+      navigation.navigate('Profile', {user_id});
+    } catch (error) {
+      console.error('Signin failure:', error);
+      Alert.alert('Signin Failed', 'Invalid email or password');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -39,10 +50,10 @@ const SigninScreen: React.FC<Props> = ({ navigation }) => {
         secureTextEntry
       />
       <Button title="Sign In" onPress={handleSignin} />
-      {/* <Button title="Signp" onPress={() => navigation.navigate('Signup')} /> */}
-      <Pressable style={styles.linkPress} onPress={() =>  navigation.navigate('Signup')}>
+      <Pressable style={styles.linkPress} onPress={() => navigation.navigate('Signup')}>
         <Text style={styles.link}>Signup</Text>
       </Pressable>
+     
     </View>
   );
 };
@@ -72,7 +83,6 @@ const styles = StyleSheet.create({
   link: {
     textDecorationLine: 'underline',
     color: 'blue',
-
   }
 });
 
