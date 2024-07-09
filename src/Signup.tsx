@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet,Pressable, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Pressable, Alert } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../types/navigaton';
 import { RouteProp } from '@react-navigation/native';
-import axios from 'axios'
+import axios, {AxiosError} from 'axios'
 
 type SignupScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Signup'>;
 
 type Props = {
   navigation: SignupScreenNavigationProp;
 };
+
 
 const SignupScreen: React.FC<Props> = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -18,21 +19,41 @@ const SignupScreen: React.FC<Props> = ({ navigation }) => {
 
   const handleSignup = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/signup', {  
+      const response = await axios.post('https://aeba-41-80-116-253.ngrok-free.app/signup', {
         username,
         email,
         password
       });
-
+  
       console.log('Signup response:', response.data);
       Alert.alert('Signup Successful', 'You have successfully signed up');
+      navigation.navigate('Journal');
 
-      // navigation.navigate('Home');  
-    } catch (error) {
-      console.error('Signup error:', error);
+    } catch (error: unknown) {
+      // if (axios.isAxiosError(error)) {
+      //   const axiosError = error as AxiosError<any>; 
+      //   if (axiosError.response) {
+
+      //     console.error('Response data:', axiosError.response.data);
+      //     console.error('Response status:', axiosError.response.status);
+      //     console.error('Response headers:', axiosError.response.headers);
+      //   } else if (axiosError.request) {
+
+      //     console.error('Request:', axiosError.request);
+      //   } else {
+
+      //     console.error('Error message:', axiosError.message);
+      //   }
+      //   console.error('Error config:', axiosError.config);
+      // } else {
+
+      //   console.error('Unknown error:', error);
+      // }
+      console.error('Signup failure',  error)
       Alert.alert('Signup Failed', 'An error occurred during signup');
     }
   };
+
 
   return (
     <View style={styles.container}>
